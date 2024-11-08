@@ -28,7 +28,7 @@ export default class Bunwork {
             const route = routeObject[routePath];
             if (!route.isDynamic) {
                 if (routePath === path) {
-                    return route.handler;
+                    return { handler: route.handler, params: {} };
                 }
             } else {
                 const regex = this.buildRouteRegex(routePath);

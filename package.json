@@ -1,6 +1,6 @@
 {
   "name": "bunwork",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Lightweight Backend Framework For Bun",
   "module": "src/index.js",
   "type": "module",
@@ -8,9 +8,6 @@
     "@types/bun": "latest"
   },
   "keywords": ["bun", "backend", "api"],
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
   "author": {
     "email": "wintkhantlin@gmail.com",
     "name": "Wint Khant Lin",
