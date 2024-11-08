@@ -7,6 +7,7 @@
   "devDependencies": {
     "@types/bun": "latest"
   },
+  "keywords": ["bun", "backend", "api"],
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
