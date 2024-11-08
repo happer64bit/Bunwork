@@ -1,4 +1,6 @@
-# Bunwork
+# BunWork `Simplicity == Joy`
+
+_Bun refers to the Just Bun runtime, while Work refers to the framework._
 
 Bunwork is just a `Bun.serve` based but make it easier for developer, designed to simplify HTTP server setup and routing for developers.
 
