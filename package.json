@@ -1,11 +1,22 @@
 {
   "name": "bunwork",
-  "module": "src/index.ts",
+  "version": "0.0.2",
+  "description": "A Lightweight Backend Framework For Bun",
+  "module": "src/index.js",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "author": {
+    "email": "wintkhantlin@gmail.com",
+    "name": "Wint Khant Lin",
+    "url": "https://wintkhantlin.vercel.app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/happer64bit/Bunwork"
   }
 }
