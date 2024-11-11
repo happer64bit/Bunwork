@@ -17,7 +17,7 @@ const users = [
 
 const UsersBlueprint = new Blueprint("/users")
 
-UsersBlueprint.middleware((req, res, next) => {
+UsersBlueprint.middleware((req, _, next) => {
     if(req.headers["Authorization"]) return new Response("No Authorization Header Allowed", {
         status: 403
     })

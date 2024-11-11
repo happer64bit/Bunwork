@@ -38,7 +38,9 @@ app.middleware((req, res, next) => {
 
 // Define GET route
 app.get('/hello/:name', (req) => {
-    const { name } = req.params;
+    const url = new URL(req.url);
+    const id = url.pathname.split('/')[2];
+    
     return new Response(`Hello, ${name}!`);
 });
 

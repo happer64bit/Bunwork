@@ -29,6 +29,8 @@ declare class Bunwork {
 
     // Helper method to extract parameters from dynamic route matches
     private extractParams(routePath: string, match: RegExpMatchArray): { [key: string]: string };
+
+    static(route: string, directoryPath: string): void;
 }
 
 declare class Blueprint {

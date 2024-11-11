@@ -1,7 +1,11 @@
+import { join } from "path";
+import { file } from "bun";
+
 export default class Bunwork {
     constructor() {
         this.middlewares = [];
         this.routes = { GET: {}, POST: {} };
+        this.staticRoutes = {}; // Store static route mappings
     }
 
     middleware(fn) {
@@ -57,11 +61,14 @@ export default class Bunwork {
         return params;
     }
 
-    registerBlueprint(blueprint) {
-        // Add blueprint middlewares to server middlewares
-        this.middlewares.push(...blueprint.getMiddlewares());
+    // Register a static route to serve files from a specific directory
+    static(route, directoryPath) {
+        this.staticRoutes[route] = directoryPath;
+    }
 
-        // Add blueprint routes to server routes
+    // Register blueprint routes and middlewares
+    registerBlueprint(blueprint) {
+        this.middlewares.push(...blueprint.getMiddlewares());
         const blueprintRoutes = blueprint.getRoutes();
         for (const method in blueprintRoutes) {
             for (const path in blueprintRoutes[method]) {
@@ -70,6 +77,7 @@ export default class Bunwork {
         }
     }
 
+    // Listen and handle requests
     listen(port, callback) {
         Bun.serve({
             port,
@@ -85,17 +93,29 @@ export default class Bunwork {
                     if (!nextCalled) return new Response("Middleware blocked the request", { status: 403 });
                 }
 
-                // Route handling with dynamic parameters
+                // Check for matching API route first
                 const routeHandler = this.matchRoute(url.pathname, method);
                 if (routeHandler) {
-                    // If dynamic parameters were found, pass them to the handler
                     if (routeHandler.params) {
                         req.params = routeHandler.params;
                     }
                     return await routeHandler.handler(req);
-                } else {
-                    return new Response("Not Found", { status: 404 });
                 }
+
+                // If no API route matches, check static routes
+                for (const [staticRoute, dirPath] of Object.entries(this.staticRoutes)) {
+                    if (url.pathname.startsWith(staticRoute)) {
+                        const filePath = join(dirPath, url.pathname.slice(staticRoute.length));
+                        try {
+                            return new Response(await file(filePath).arrayBuffer(), { status: 200 });
+                        } catch {
+                            return new Response("File Not Found", { status: 404 });
+                        }
+                    }
+                }
+
+                // If neither API nor static route matches, return 404
+                return new Response("Not Found", { status: 404 });
             },
         });
 
@@ -103,7 +123,7 @@ export default class Bunwork {
     }
 }
 
-class Blueprint {
+export class Blueprint {
     constructor(prefix) {
         this.prefix = prefix;
         this.routes = { GET: {}, POST: {} };
