@@ -1,10 +1,13 @@
 import Bunwork from "../../src";
 import loggerMiddleware from "../../src/utils/logger";
+import UsersBlueprint from './users.blueprint'
 
 const app = new Bunwork();
 
 // Apply the logger middleware globally
 app.middleware(loggerMiddleware);
+
+app.static("/", "./public")
 
 // GET route for "/"
 app.get('/', async (req) => {
@@ -23,11 +26,6 @@ app.get('/greet', async (req) => {
     return new Response(`Hello, ${name}! You are ${age} years old.`, { status: 200 });
 });
 
-app.get('/users/:username', async (req) => {
-    const url = new URL(req.url);
-    const username = url.pathname.split('/')[2];
-
-    return new Response(`Hello, ${username}!`, { status: 200 });
-});
+app.registerBlueprint(UsersBlueprint)
 
 app.listen(3000);
