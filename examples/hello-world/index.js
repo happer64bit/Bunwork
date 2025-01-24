@@ -1,12 +1,9 @@
 import Bunwork from "bunwork";
-import loggerMiddleware from "bunwork/utils/logger";
 import UsersBlueprint from './users.blueprint'
 
 const app = new Bunwork();
 
 // Apply the logger middleware globally
-app.middleware(loggerMiddleware);
-
 app.static("/", "./public")
 
 // GET route for "/"

@@ -4,7 +4,7 @@
     "": {
       "name": "hello-world",
       "dependencies": {
-        "bunwork": "^0.0.4",
+        "bunwork": "github:happer64bit/bunwork",
       },
       "devDependencies": {
         "@types/bun": "latest",
@@ -23,7 +23,7 @@
 
     "bun-types": ["bun-types@1.2.0", "", { "dependencies": { "@types/node": "*", "@types/ws": "~8.5.10" } }, "sha512-KEaJxyZfbV/c4eyG0vyehDpYmBGreNiQbZIqvVHJwZ4BmeuWlNZ7EAzMN2Zcd7ailmS/tGVW0BgYbGf+lGEpWw=="],
 
-    "bunwork": ["bunwork@0.0.4", "", {}, "sha512-I2hYtoQXLMOUyZdvczN/esMMoYI7cBzxKbTu+6QosDlIxUWXi0WmO8LINn5MANhzrBYMrlA5D8QVPTd+n35n4A=="],
+    "bunwork": ["bunwork@github:happer64bit/bunwork#f0306e5", {}, "happer64bit-Bunwork-f0306e5"],
 
     "typescript": ["typescript@5.7.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw=="],
 
