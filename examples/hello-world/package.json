@@ -1,0 +1,14 @@
+{
+  "name": "hello-world",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "bunwork": "^0.0.4"
+  }
+}

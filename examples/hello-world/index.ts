@@ -1,5 +1,5 @@
-import Bunwork from "../../src";
-import loggerMiddleware from "../../src/utils/logger";
+import Bunwork from "bunwork";
+import loggerMiddleware from "bunwork/utils/logger";
 import UsersBlueprint from './users.blueprint'
 
 const app = new Bunwork();

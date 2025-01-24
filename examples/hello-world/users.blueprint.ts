@@ -1,4 +1,4 @@
-import { Blueprint } from "../../src";
+import { Blueprint } from "bunwork";
 
 const users = [
     {
