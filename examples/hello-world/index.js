@@ -1,4 +1,4 @@
-import Bunwork from "bunwork";
+import Bunwork from "bunwork";w
 import UsersBlueprint from './users.blueprint'
 
 const app = new Bunwork();

@@ -1,13 +1,15 @@
 {
   "name": "bunwork",
-  "version": "0.0.4",
+  "version": "0.0.6",
+  "main": "index.ts",
   "description": "A Lightweight Backend Framework For Bun",
-  "module": "src/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "^1.2.1"
   },
-  "keywords": ["bun", "backend", "api"],
+  "keywords": ["bun", "backend", "api", "server"],
   "author": {
     "email": "wintkhantlin@gmail.com",
     "name": "Wint Khant Lin",
@@ -16,5 +18,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/happer64bit/Bunwork"
+  },
+  "peerDependencies": {
+    "typescript": "^5.7.3"
   }
 }
