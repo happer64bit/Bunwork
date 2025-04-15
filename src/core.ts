@@ -73,13 +73,30 @@ export default class Bunwork {
 
         for (const part of parts) {
             const key = part.startsWith(":") ? ":" : part;
-            if (!current.has(key)) current.set(key, { children: new Map() });
-            node = current.get(key);
-            if (part.startsWith(":")) node!.paramName = part.slice(1);
+
+            // Ensure the node is created for this part if it doesn't exist
+            if (!current.has(key)) {
+                const newNode: RouteNode = { children: new Map() };
+                current.set(key, newNode);
+                node = newNode;  // Assign newly created node
+            } else {
+                node = current.get(key);
+            }
+
+            if (part.startsWith(":")) {
+                node!.paramName = part.slice(1); // Ensure paramName is set on the correct node
+            }
+
+            // Move to the children map for the next part of the path
             current = node!.children;
         }
 
-        node!.handler = handler;
+        // Ensure node is not undefined before setting the handler
+        if (node) {
+            node.handler = handler;
+        } else {
+            throw new Error("Failed to add route handler. Node is undefined.");
+        }
     }
 
     /**
