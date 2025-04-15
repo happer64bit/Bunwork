@@ -9,6 +9,6 @@
   },
   "type": "module",
   "dependencies": {
-    "bunwork": "github:happer64bit/bunwork"
+    "bunwork": "../../"
   }
 }

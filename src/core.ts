@@ -1,16 +1,16 @@
 import { join } from "path";
 import { file } from "bun";
 
-declare global {
-    interface Request {
-        params?: { [key: string]: string };
-    }
+export type Middleware = (req: Request, res: Response, next: () => void) => void;
+
+export interface IRequest extends Request {
+    params?: { [key: string]: string };
 }
 
 // Represents the main Bunwork server class
 export default class Bunwork {
     // Stores the middleware functions
-    private middlewares: Array<(req: Request, res: Response, next: () => void) => void>;
+    private middlewares: Middleware[];
     // Stores the routes with methods as keys (GET/POST) and path mappings
     private routes: {
         GET: { [key: string]: { handler: Function; isDynamic: boolean } };
@@ -29,7 +29,7 @@ export default class Bunwork {
      * Adds a middleware function to the stack
      * @param fn The middleware function to add
      */
-    middleware(fn: (req: Request, res: Response, next: () => void) => void): void {
+    middleware(fn: (req: IRequest, res: Response, next: () => void) => void): void {
         this.middlewares.push(fn);
     }
 
@@ -141,7 +141,7 @@ export default class Bunwork {
     listen(port: number, callback?: () => void): void {
         Bun.serve({
             port,
-            fetch: async (req: Request) => {
+            fetch: async (req: IRequest) => {
                 const url = new URL(req.url);
                 const method = req.method.toUpperCase() as "GET" | "POST";
 
@@ -181,6 +181,48 @@ export default class Bunwork {
 
         if (callback) callback();
     }
+
+    handle(req: Request): Promise<Response> {
+        const url = new URL(req.url);
+        const method = req.method.toUpperCase() as "GET" | "POST";
+
+        // Middleware processing
+        const runMiddlewares = async () => {
+            for (const middleware of this.middlewares) {
+                let nextCalled = false;
+                const next = () => { nextCalled = true; };
+                await middleware(req as IRequest, new Response(), next);
+                if (!nextCalled) return new Response("Middleware blocked the request", { status: 403 });
+            }
+            return null;
+        };
+
+        return (async () => {
+            const blockedRes = await runMiddlewares();
+            if (blockedRes) return blockedRes;
+
+            const routeHandler = this.matchRoute(url.pathname, method);
+            if (routeHandler) {
+                if (routeHandler.params) {
+                    (req as IRequest).params = routeHandler.params;
+                }
+                return await routeHandler.handler(req);
+            }
+
+            for (const [staticRoute, dirPath] of Object.entries(this.staticRoutes)) {
+                if (url.pathname.startsWith(staticRoute)) {
+                    const filePath = join(dirPath, url.pathname.slice(staticRoute.length));
+                    try {
+                        return new Response(await file(filePath).arrayBuffer(), { status: 200 });
+                    } catch {
+                        return new Response("File Not Found", { status: 404 });
+                    }
+                }
+            }
+
+            return new Response("Not Found", { status: 404 });
+        })();
+    }
 }
 
 // Represents a blueprint for organizing related routes and middlewares
@@ -193,7 +235,7 @@ export class Blueprint {
         POST: { [key: string]: { handler: Function; isDynamic: boolean } };
     };
     // Stores the middleware functions for this blueprint
-    private middlewares: Array<(req: Request, res: Response, next: () => void) => void>;
+    private middlewares: Array<(req: IRequest, res: Response, next: () => void) => void>;
 
     constructor(prefix: string) {
         this.prefix = prefix;
@@ -205,7 +247,7 @@ export class Blueprint {
      * Adds a middleware function to the blueprint
      * @param fn The middleware function to add
      */
-    middleware(fn: (req: Request, res: Response, next: () => void) => void): void {
+    middleware(fn: (req: IRequest, res: Response, next: () => void) => void): void {
         this.middlewares.push(fn);
     }
 
@@ -248,7 +290,7 @@ export class Blueprint {
      * Retrieves all the middlewares for this blueprint
      * @returns An array of middleware functions
      */
-    getMiddlewares(): Array<(req: Request, res: Response, next: () => void) => void> {
+    getMiddlewares(): Array<(req: IRequest, res: Response, next: () => void) => void> {
         return this.middlewares;
     }
 }

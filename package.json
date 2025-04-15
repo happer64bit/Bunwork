@@ -1,13 +1,13 @@
 {
   "name": "bunwork",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "index.ts",
   "description": "A Lightweight Backend Framework For Bun",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "^1.2.1"
+    "@types/bun": "^1.2.2"
   },
   "keywords": ["bun", "backend", "api", "server"],
   "author": {

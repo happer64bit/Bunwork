@@ -17,18 +17,8 @@ const users = [
 
 const UsersBlueprint = new Blueprint("/users")
 
-UsersBlueprint.middleware((req, _, next) => {
-    if(req.headers["Authorization"]) return new Response("No Authorization Header Allowed", {
-        status: 403
-    })
-
-    next()
-})
-
 UsersBlueprint.get("/:id", (req) => {
-    const url = new URL(req.url);
-    const id = url.pathname.split('/')[2];
-
+    const { id } = req.params
     return Response.json(users.find((val) => val.id == parseInt(id)) ?? {})
 })
 
