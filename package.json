@@ -1,10 +1,9 @@
 {
   "name": "bunwork",
-  "version": "0.1.1",
-  "main": "index.ts",
+  "version": "0.1.2",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "description": "A Lightweight Backend Framework For Bun",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
   "type": "module",
   "devDependencies": {
     "@types/bun": "^1.2.2"

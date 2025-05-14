@@ -1,4 +1,4 @@
-import { Blueprint } from "bunwork";
+import { Router } from "bunwork";
 
 const users = [
     {
@@ -15,7 +15,7 @@ const users = [
     }
 ]
 
-const UsersBlueprint = new Blueprint("/users")
+const UsersBlueprint = new Router("/users")
 
 UsersBlueprint.get("/:id", (req) => {
     const { id } = req.params
