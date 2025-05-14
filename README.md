@@ -74,10 +74,10 @@ For instance, requesting `/hello/john` will return `"Hello, john!"`.
 Blueprints allow you to group routes and middlewares into modular sections with a common prefix.
 
 ```javascript
-import { Blueprint } from "bunwork";
+import { Router } from "bunwork";
 
 // Create a new blueprint with a prefix
-const userBlueprint = new Blueprint('/users');
+const userBlueprint = new Router('/users');
 
 // Define routes within the blueprint
 userBlueprint.get('/:id', (req) => {
@@ -91,7 +91,8 @@ userBlueprint.post('/:id/update', (req) => {
 });
 
 // Register the blueprint to the main app
-app.registerBlueprint(userBlueprint);
+
+userBlueprint.applyTo(server);
 ```
 
 This will allow you to have routes like `/users/1` and `/users/1/update`.
